@@ -1,0 +1,116 @@
+<!DOCTYPE HTML>
+<!--
+  Astral by HTML5 UP
+  html5up.net | @ajlkn
+  Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <title>Bodegon INSPT</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
+  </head>
+  <body class="is-preload">
+
+    <!-- Wrapper-->
+    <div id="wrapper">
+
+      <!-- Nav -->
+      <nav id="nav">
+        <a href="#" class="icon solid fa-home"><span>Personal</span></a>
+        <a href="#users" class="icon solid fa-users"><span>Usuarios</span></a>
+        <a href="#food" class="icon solid fa-drumstick-bite"><span>Cotizar</span></a>
+        <a href="#drink" class="icon solid fa-wine-glass-alt"><span>Bebidas</span></a>
+      </nav>
+
+      <!-- Main -->
+      <div id="main">
+
+        <!-- Personal -->
+        <article id="home" class="panel intro">
+          <header>
+            <h1 th:text="${usuario.nombre}" />
+            <p>Administrador(a)</p>
+            <br/>
+            <p>
+              <a class="button" href="/logout">Logout</a>
+            </p>
+          </header>
+          <div class="jumplink pic">
+            <img src="images/admin.jpg" alt="" />
+          </div>
+        </article>
+
+        <!-- Usuarios -->
+        <article id="users" class="panel">
+          <header>
+            <h2>Gestión de Usuarios</h2>
+          </header>
+          <div th:each="u : ${usuarios}">
+            <form action="#users" th:action="@{/editar-borrar-usuario}" method="post">
+              <input type="hidden" name="admin" th:value="${usuario.codigo}" />
+              <div class="row">
+                <div class="col-3 col-12-medium">
+                  <input type="text" name="nombre" th:value="${u.nombre}" required />
+                </div>
+                <div class="col-3 col-12-medium">
+                  <input type="password" name="password" th:value="${u.password}" required />
+                </div>
+                <div class="col-3 col-12-medium">
+                  <input type="text" name="rol" th:value="${u.rol}" readonly required />
+                </div>
+                <div class="col-2 col-12-medium">
+                  <input type="submit" name="accion" value="Editar" />
+                </div>
+                <div th:if="${u.codigo != usuario.codigo}" class="col-2 col-12-medium">
+                  <input type="submit" name="accion" value="Borrar" />
+                </div>
+              </div>
+            </form>
+          </div>
+          <div>
+            <form action="#users" th:action="@{/nuevo-usuario}" method="post">
+              <input type="hidden" name="admin" th:value="${usuario.codigo}" />
+              <div class="row">
+                <div class="col-3 col-12-medium">
+                  <input type="text" name="nombre" placeholder="Nombre" required />
+                </div>
+                <div class="col-3 col-12-medium">
+                  <input type="password" name="password" placeholder="Password" required />
+                </div>
+                <div class="col-3 col-12-medium">
+                  <select name="rol">
+                    <option value="Camarero">Camarero</option>
+                    <option value="Cocinero">Cocinero</option>
+                  </select>
+                </div>
+                <div class="col-3 col-12-medium">
+                  <input type="submit" value="Nuevo" />
+                </div>
+              </div>
+            </form>
+          </div>
+        </article>
+
+        
+      <!-- Footer -->
+      <div id="footer">
+        <ul class="copyright">
+          <li>&copy; UTN-INSPT.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Scripts -->
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/browser.min.js"></script>
+    <script src="assets/js/breakpoints.min.js"></script>
+    <script src="assets/js/util.js"></script>
+    <script src="assets/js/main.js"></script>
+
+  </body>
+</html>

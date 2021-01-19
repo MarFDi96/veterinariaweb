@@ -1,10 +1,10 @@
-package com.example.controlador;
+package com.example.veterinaria.controlador;
 
 
-import com.example.modelo.RepoUsuarios;
-import com.example.modelo.Usuario;
-import com.example.modelo.Recepcionista;
-import com.example.modelo.Veterinario;
+import com.example.veterinaria.modelo.RepoUsuarios;
+import com.example.veterinaria.modelo.Usuario;
+import com.example.veterinaria.modelo.Recepcionista;
+import com.example.veterinaria.modelo.Veterinario;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;

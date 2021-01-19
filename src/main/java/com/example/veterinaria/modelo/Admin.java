@@ -1,4 +1,4 @@
-package com.example.modelo;
+package com.example.veterinaria.modelo;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
@@ -7,6 +7,9 @@ import javax.persistence.Entity;
 @DiscriminatorValue("Admin")
 public class Admin extends Usuario {
 
+        public Admin() {
+    }
+        
     public Admin(String id, String nombre, String password) {
         super(id, nombre, password);
     }

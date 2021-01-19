@@ -1,4 +1,4 @@
-package com.example.modelo;
+package com.example.veterinaria.modelo;
 
 
 import com.sun.istack.NotNull;
@@ -7,6 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "usuarios")
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "rol")
 public class Usuario implements Serializable {
     @Id
     @Column(updatable = false, nullable = false, unique = true, insertable = false)
@@ -27,6 +29,10 @@ public class Usuario implements Serializable {
         this.id = id;
         this.nombre = nombre;
         this.password = password;
+    }
+
+    public Usuario() {
+        
     }
 
     public String getRol() {

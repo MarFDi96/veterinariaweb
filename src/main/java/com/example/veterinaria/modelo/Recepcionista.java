@@ -11,8 +11,8 @@ public class Recepcionista extends Usuario {
         
     }
     
-    public Recepcionista(String id, String nombre, String password) {
-        super(id, nombre, password);
+    public Recepcionista(String id, String nombre, String password, String diaslaborales) {
+        super(id, nombre, password, diaslaborales);
     }
 
 }

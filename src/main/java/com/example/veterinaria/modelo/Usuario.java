@@ -1,6 +1,5 @@
 package com.example.veterinaria.modelo;
 
-
 import com.sun.istack.NotNull;
 import java.io.Serializable;
 import javax.persistence.*;
@@ -10,29 +9,57 @@ import javax.persistence.*;
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @DiscriminatorColumn(name = "rol")
 public class Usuario implements Serializable {
+
     @Id
     @Column(updatable = false, nullable = false, unique = true, insertable = false)
     String id;
-    
+
     @NotNull
     @Column(nullable = false)
     String nombre;
-    
-    @NotNull            
+
+    @NotNull
     @Column(nullable = false)
     String password;
-    
+
     @Column(updatable = false, insertable = false)
     private String rol;
 
-    public Usuario(String id, String nombre, String password) {
+    @NotNull
+    @Column(nullable = false)
+    String diaslaborales;
+
+    @NotNull
+    @Column(nullable = false)
+    String manejoanimal;
+
+    public Usuario(String id, String nombre, String password, String diaslaborales/*, String manejoanimal*/) {
         this.id = id;
         this.nombre = nombre;
         this.password = password;
+        this.diaslaborales = diaslaborales;
+        //this.manejoanimal = manejoanimal;
     }
 
     public Usuario() {
-        
+
+    }
+
+    public String getManejoanimal() {
+        return manejoanimal;
+    }
+
+    public void setManejoanimal(String manejoanimal) {
+        this.manejoanimal = manejoanimal;
+    }
+    
+
+    public String getDiaslaborales() {
+        return diaslaborales;
+    }
+
+    public void setDiaslaborales(String diaslaborales) {
+        this.diaslaborales = diaslaborales;
     }
 
     public String getRol() {
@@ -42,7 +69,7 @@ public class Usuario implements Serializable {
     public void setRol(String rol) {
         this.rol = rol;
     }
-    
+
     public String getId() {
         return id;
     }

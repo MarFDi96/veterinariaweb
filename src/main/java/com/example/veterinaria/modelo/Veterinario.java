@@ -11,8 +11,8 @@ public class Veterinario extends Usuario {
         
     }
 
-    public Veterinario(String id, String nombre, String password) {
-        super(id, nombre, password);
+    public Veterinario(String id, String nombre, String password, String diaslaborales) {
+        super(id, nombre, password, diaslaborales);
     }
 
 }

@@ -1,6 +1,8 @@
 package com.example.veterinaria.controlador;
 
 
+import com.example.veterinaria.modelo.RepoProductos;
+import com.example.veterinaria.modelo.RepoTurnos;
 import com.example.veterinaria.modelo.RepoUsuarios;
 import com.example.veterinaria.modelo.Usuario;
 import java.util.List;
@@ -20,12 +22,21 @@ public class Home {
     @Autowired
     private RepoUsuarios ru;
 
+    @Autowired
+    private RepoTurnos rt;
     
+    @Autowired
+    private RepoProductos rp;
     
-    private String login(Model model, Usuario usuario, Object o) {
+    private String login(Model model, Usuario usuario) {
         if (usuario != null) {
             
             model.addAttribute("usuario", usuario);
+            model.addAttribute("doctores", ru.findByRol("Veterinario"));
+            model.addAttribute("productos", rp.findAll());
+            model.addAttribute("productosregulares", rp.findByCategoria("regulares"));
+            model.addAttribute("medicamentos", rp.findByCategoria("medicamentos"));
+            model.addAttribute("turnos", rt.findAll());
             model.addAttribute("usuarios", ru.findAll());
             return usuario.getRol().toLowerCase();
         }
@@ -42,12 +53,12 @@ public class Home {
         if (!match.isEmpty()) {
             usuario = match.get(0);
         }
-        return login(model, usuario, null);
+        return login(model, usuario);
     }
 
     @GetMapping("/login")
     public String home(Model model) {
-        return login(model, (Usuario) model.getAttribute("usuario"), null);
+        return login(model, (Usuario) model.getAttribute("usuario"));
     }
 
     @GetMapping("/logout")
@@ -55,10 +66,10 @@ public class Home {
         return "redirect:/";
     }
     
-        @GetMapping("/resumen/{codigo}")
+        @GetMapping("/turnos/{id}")
     public String resumen(final RedirectAttributes redirectAttributes,
-            @PathVariable(value = "codigo") String adminId) {
-        redirectAttributes.addFlashAttribute("usuario", ru.findById(adminId).get());
+            @PathVariable(value = "id") String vetId) {
+        redirectAttributes.addFlashAttribute("usuario", ru.findById(vetId).get());
         return "redirect:/login#";
     }
     

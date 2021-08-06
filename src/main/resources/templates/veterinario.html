@@ -7,6 +7,11 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
     <head>
+        <style>
+            div.b {
+                line-height: 1.6;
+            }
+        </style>
         <title>Veterinaria Web</title>
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -36,8 +41,8 @@
                         <p>Veterinario</p>
                         <br/>
 
-                        <p>Dias de trabajo: <span th:text="${usuario.diaslaborales}"></span></p>
-                        <p>Conocimiento de animales: <span th:text="${usuario.manejoanimal}"></span></p>
+                        <p>Dias de trabajo actuales: <span th:text="${usuario.diaslaborales}"></span></p>
+                        <p>Conocimiento de animales actual: <span th:text="${usuario.manejoanimal}"></span></p>
 
 
                         <p>
@@ -55,14 +60,15 @@
                     <header>
                         <h2>Lista de Turnos</h2>
                     </header>
-                    <div th:each="t : ${turnos}">
-                        <p>Doctor: <span th:text="${t.iddoctor}"></span></p>
-                        <p>Horario: <span th:text="${t.horario}"></span></p>
-                        <p>Nombre del dueño: <span th:text="${t.nombrepropietario}"></span></p>
-                        <p>Nombre de la mascota: <span th:text="${t.nombremascota}"></span></p>
-                        <p>Tipo de animal: <span th:text="${t.tipoanimal}"></span></p>
-                        <p>Número de contacto: <span th:text="${t.numerocontacto}"></span></p>
-                        <p>Día del turno: <span th:text="${t.dia}"></span></p>
+                    <div class="b" th:each="t : ${turnosDelDoctor}">
+                        Turno número: <span th:text="${t.id}"></span><br>
+                        Día del turno: <span th:text="${t.dia}"></span><br>
+                        Horario: <span th:text="${t.horario}"></span><br>
+                        Nombre del dueño: <span th:text="${t.nombrepropietario}"></span><br>
+                        Nombre de la mascota: <span th:text="${t.nombremascota}"></span><br>
+                        Tipo de animal: <span th:text="${t.tipoanimal}"></span><br>
+                        Número de contacto: <span th:text="${t.numerocontacto}"></span><br>                      
+                        <p>~~~~~~~~~~~~~~</p>
                     </div>
                 </article>
 
@@ -70,12 +76,13 @@
                 <!--dias laborales -->
                 <article id="config" class="panel">
                     <header>                       
-                        <p>Dias de trabajo: <span th:text="${usuario.diaslaborales}"></span></p>
+                        <p>Dias de trabajo actuales: <span th:text="${usuario.diaslaborales}"></span></p>
                     </header>                    
                     <form action="#config" th:action="@{/editar-veterinario-dias}" method="post">
                         <input type="hidden" name="admin" th:value="${usuario.id}" />
+                        <label> Elija el primer día</label>
                         <select name="dia1">
-                            <option disabled selected>Elija el primer dia</option>
+                            <!--   <option disabled selected>Elija el primer dia</option> -->
                             <option value="lunes">lunes</option>
                             <option value="martes">martes</option>
                             <option value="miercoles">miercoles</option>
@@ -84,8 +91,9 @@
                             <option value="sabado">sabado</option>
                         </select>
                         <p><br/>
+                            <label> Elija el segundo día</label>
                             <select name="dia2">
-                                <option disabled selected>Elija el segundo dia</option>
+                                <!--   <option disabled selected>Elija el segundo dia</option> -->
                                 <option value="lunes">lunes</option>
                                 <option value="martes">martes</option>
                                 <option value="miercoles">miercoles</option>
@@ -94,8 +102,9 @@
                                 <option value="sabado">sabado</option>
                             </select>
                             <p>
+                                <label> Elija el tercer día</label>
                                 <select name="dia3">
-                                    <option disabled selected>Elija el tercer dia</option>
+                                    <!--          <option disabled selected>Elija el tercer dia</option> -->
                                     <option value="lunes">lunes</option>
                                     <option value="martes">martes</option>
                                     <option value="miercoles">miercoles</option>
@@ -107,36 +116,41 @@
                                     <input type="submit" name="accion" value="Actualizar" />
                                 </div>
                                 </form>
-                    
-                                <p>Conocimiento de animales: <span th:text="${usuario.manejoanimal}"></span></p>
+
+                                <p>Conocimiento de animales actual: <span th:text="${usuario.manejoanimal}"></span></p>
                                 <form action="#config" th:action="@{/editar-veterinario-animales}" method="post">
                                     <input type="hidden" name="admin" th:value="${usuario.id}" />
+
+                                    <!--<label> Elija el primer animal</label>-->
                                     <select name="animal1">
-                                        <option disabled selected>Elija el primer animal</option>
+                                        <option disabled selected>Elija el primer animal</option>
                                         <option value="gato">gato</option>
                                         <option value="perro">perro</option>
                                         <option value="tortuga">tortuga</option>
                                         <option value="canario">canario</option>
                                     </select>
                                     <p><br/>
+                                        <!--<label> Elija el segundo animal</label>-->
                                         <select name="animal2">
-                                            <option disabled selected>Elija el segundo animal</option>
+                                            <option disabled selected>Elija el segundo animal</option>
                                             <option value="gato">gato</option>
                                             <option value="perro">perro</option>
                                             <option value="tortuga">tortuga</option>
                                             <option value="canario">canario</option>
                                         </select>
                                         <p>
+                                            <!--<label> Elija el tercer animal</label>-->
                                             <select name="animal3">
-                                                <option disabled selected>Elija el tercer animal</option>
+                                                <option disabled selected>Elija el tercer animal</option>
                                                 <option value="gato">gato</option>
                                                 <option value="perro">perro</option>
                                                 <option value="tortuga">tortuga</option>
                                                 <option value="canario">canario</option>
                                             </select>
                                             <p>
+                                                <!--<label> Elija el cuarto animal</label>-->
                                                 <select name="animal4">
-                                                    <option disabled selected>Elija el cuarto animal</option>
+                                                    <option disabled selected>Elija el cuarto animal</option>
                                                     <option value="gato">gato</option>
                                                     <option value="perro">perro</option>
                                                     <option value="tortuga">tortuga</option>
@@ -182,12 +196,6 @@
                                                 </article>
                                                 </div>
 
-                                                <!-- Footer -->
-                                                <div id="footer">
-                                                    <ul class="copyright">
-                                                        <li>&copy; UTN-INSPT.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
-                                                    </ul>
-                                                </div>
 
                                                 </div>
 

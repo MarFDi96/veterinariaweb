@@ -1,9 +1,9 @@
 package com.example.veterinaria.controlador;
 
 
-import com.example.veterinaria.modelo.RepoProductos;
-import com.example.veterinaria.modelo.RepoTurnos;
-import com.example.veterinaria.modelo.RepoUsuarios;
+import com.example.veterinaria.modelo.repository.RepoProductos;
+import com.example.veterinaria.modelo.repository.RepoTurnos;
+import com.example.veterinaria.modelo.repository.RepoUsuarios;
 import com.example.veterinaria.modelo.Usuario;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,36 +20,21 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class Home {
 
     @Autowired
-    private RepoUsuarios ru;
+    private RepoUsuarios repositorioUsuarios;
 
     @Autowired
-    private RepoTurnos rt;
+    private RepoTurnos repositorioTurnos;
     
     @Autowired
-    private RepoProductos rp;
+    private RepoProductos repositorioProductos;
     
-    private String login(Model model, Usuario usuario) {
-        if (usuario != null) {
-            
-            model.addAttribute("usuario", usuario);
-            model.addAttribute("doctores", ru.findByRol("Veterinario"));
-            model.addAttribute("productos", rp.findAll());
-            model.addAttribute("productosregulares", rp.findByCategoria("regulares"));
-            model.addAttribute("medicamentos", rp.findByCategoria("medicamentos"));
-            model.addAttribute("turnos", rt.findAll());
-            model.addAttribute("usuarios", ru.findAll());
-            return usuario.getRol().toLowerCase();
-        }
-        model.addAttribute("error", "No se encontró Nombre/Password");
-        return "index";
-    }
 
     @PostMapping("/login")
     public String home(Model model,
             @RequestParam(name = "id", required = true) String id,
             @RequestParam(name = "password", required = true) String password) {
         Usuario usuario = null;
-        List<Usuario> match = ru.findByIdAndPassword(id, password);
+        List<Usuario> match = repositorioUsuarios.findByIdAndPassword(id, password);
         if (!match.isEmpty()) {
             usuario = match.get(0);
         }
@@ -69,8 +54,24 @@ public class Home {
         @GetMapping("/turnos/{id}")
     public String resumen(final RedirectAttributes redirectAttributes,
             @PathVariable(value = "id") String vetId) {
-        redirectAttributes.addFlashAttribute("usuario", ru.findById(vetId).get());
+        redirectAttributes.addFlashAttribute("usuario", repositorioUsuarios.findById(vetId).get());
         return "redirect:/login#";
     }
     
+        private String login(Model model, Usuario usuario) {
+        if (usuario != null) {
+            
+            model.addAttribute("usuario", usuario);
+            model.addAttribute("doctores", repositorioUsuarios.findByRol("Veterinario"));
+            model.addAttribute("productos", repositorioProductos.findAll());
+            model.addAttribute("productosregulares", repositorioProductos.findByCategoria("regulares"));
+            model.addAttribute("medicamentos", repositorioProductos.findByCategoria("medicamentos"));
+            model.addAttribute("turnos", repositorioTurnos.findAll());
+            model.addAttribute("turnosDelDoctor", repositorioTurnos.findByIddoctor(usuario.getId()));
+            model.addAttribute("usuarios", repositorioUsuarios.findAll());
+            return usuario.getRol().toLowerCase();
+        }
+        model.addAttribute("error", "No se encontró Nombre/Password");
+        return "index";
+    }
 }

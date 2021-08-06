@@ -1,24 +1,28 @@
 package com.example.veterinaria.controlador;
 
-import com.example.veterinaria.modelo.RepoUsuarios;
+import com.example.veterinaria.modelo.repository.RepoUsuarios;
 import com.example.veterinaria.modelo.Usuario;
+import com.example.veterinaria.modelo.Turno;
 import com.example.veterinaria.modelo.Recepcionista;
 import com.example.veterinaria.modelo.Veterinario;
+import com.example.veterinaria.modelo.repository.RepoTurnos;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 public class ABMUsuarios {
-    
+
     @Autowired
     RepoUsuarios ru;
 
-    //TODO
-    //AGREGAR FUNCION PARA QUE EL DOCTOR CAMBIE SUS DIAS LABORALES
+    @Autowired
+    RepoTurnos rt;
+
     @PostMapping("/nuevo-usuario")
     public String nuevoUsuario(final RedirectAttributes redirectAttributes,
             @RequestParam(name = "id") String id,
@@ -27,7 +31,7 @@ public class ABMUsuarios {
             @RequestParam(name = "rol") String rol,
             @RequestParam(name = "diaslaborales") String diaslaborales,
             @RequestParam(name = "admin") String admin) {
-        
+
         if (rol.equals("Veterinario")) {
             ru.saveAndFlush(new Veterinario(id, nombre, password, diaslaborales));
         } else {
@@ -38,7 +42,7 @@ public class ABMUsuarios {
         redirectAttributes.addFlashAttribute("usuario", usuario);
         return "redirect:/login#users";
     }
-    
+
     @PostMapping("/editar-borrar-usuario")
     public String editarBorrarUsuario(final RedirectAttributes redirectAttributes,
             @RequestParam(name = "id") String id,
@@ -60,16 +64,20 @@ public class ABMUsuarios {
         redirectAttributes.addFlashAttribute("usuario", usuario);
         return "redirect:/login#users";
     }
-    
+
     @PostMapping("/editar-veterinario-dias")
     public String editarDiasVeterinario(final RedirectAttributes redirectAttributes,
             @RequestParam(name = "dia1") String diauno,
             @RequestParam(name = "dia2") String diados,
             @RequestParam(name = "dia3") String diatres,
             @RequestParam(name = "admin") String admin) {
-        
+
         if (diauno.equals(diados) || diauno.equals(diatres) || diados.equals(diatres)) {
-            return "redirect:/login#config";
+            redirectAttributes.addFlashAttribute("errormsg", "Los días no pueden estar repetidos");
+            return "redirect:/error";
+        } else if (!rt.findByIddoctor(admin).isEmpty()) {
+            redirectAttributes.addFlashAttribute("errormsg", "No se pudo realizar el cambio, quedan turnos pendientes");
+            return "redirect:/error";
         } else {
             Usuario usuario;
             usuario = ru.findById(admin).get();
@@ -77,46 +85,56 @@ public class ABMUsuarios {
             ru.saveAndFlush(usuario);
             redirectAttributes.addFlashAttribute("usuario", usuario);
             return "redirect:/login#users";
+
         }
-        
+
     }
-    
-        @PostMapping("/editar-veterinario-animales")
+
+    @PostMapping("/editar-veterinario-animales")
     public String editarAnimalesVeterinario(final RedirectAttributes redirectAttributes,
-            @RequestParam(name = "animal1") String animalUno,
+            @RequestParam(name = "animal1") Optional<String> animalUno,
             @RequestParam(name = "animal2") Optional<String> animalDos,
-            @RequestParam(name = "animal3") Optional <String> animalTres,
-            @RequestParam(name = "animal4") Optional <String> animalCuatro,
-            @RequestParam(name = "admin") String admin) {
-        
-        if (animalUno.equals(animalDos) || animalUno.equals(animalTres) ||animalUno.equals(animalCuatro)||
-                                           animalDos.equals(animalTres)|| animalDos.equals(animalCuatro)) {
-            return "redirect:/login#config";
-        } else {
-            String animalHandling = "";
-            
-            animalHandling += animalUno;
-            
-            if(animalDos.isPresent()){
-                animalHandling += ", " + animalDos.get();
-            }          
-            //animalDos.ifPresent ( animalHandling += ", " + animalDos.get());
-            if (animalTres.isPresent()){
-                animalHandling += ", " + animalTres.get();
-            }
-            if (animalCuatro.isPresent()){
-                animalHandling += ", " + animalCuatro.get();
-            }
-            
-            Usuario usuario;
-            usuario = ru.findById(admin).get();
-            usuario.setManejoanimal(animalHandling);
-            ru.saveAndFlush(usuario);
-            redirectAttributes.addFlashAttribute("usuario", usuario);
-            return "redirect:/login#users";
+            @RequestParam(name = "animal3") Optional<String> animalTres,
+            @RequestParam(name = "animal4") Optional<String> animalCuatro,
+            @RequestParam(name = "admin") String doctor) {
+
+        Usuario usuario;
+        usuario = ru.findById(doctor).get();
+        boolean turnosFlag;
+        String manejoAnimal = "";
+
+        if (animalUno.isPresent()) {
+            manejoAnimal += animalUno.get();
         }
-        
+        if (animalDos.isPresent() && !animalDos.equals(animalUno)) {
+
+            manejoAnimal += ", " + animalDos.get();
+        }
+
+        //animalDos.ifPresent ( manejoAnimal += ", " + animalDos.get());
+        if (animalTres.isPresent() && !animalTres.equals(animalDos)
+                && !animalTres.equals(animalUno)) {
+
+            manejoAnimal += ", " + animalTres.get();
+        }
+        if (animalCuatro.isPresent() && !animalCuatro.equals(animalTres)
+                && !animalCuatro.equals(animalDos) && !animalCuatro.equals(animalUno)) {
+
+            manejoAnimal += ", " + animalCuatro.get();
+        }
+        for(Turno t: rt.findByIddoctor(doctor)){
+
+            if (!manejoAnimal.contains(t.getTipoanimal())){
+                redirectAttributes.addFlashAttribute("errormsg", "No se pudo realizar el cambio, quedan turnos con animales de la anterior configuración");
+            return "redirect:/error";
+            }
+        }
+
+        usuario.setManejoanimal(manejoAnimal);
+        ru.saveAndFlush(usuario);
+        redirectAttributes.addFlashAttribute("usuario", usuario);
+        return "redirect:/login#users";
+
     }
-    
 
 }

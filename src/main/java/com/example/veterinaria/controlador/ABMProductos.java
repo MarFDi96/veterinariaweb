@@ -5,8 +5,8 @@
  */
 package com.example.veterinaria.controlador;
 
-import com.example.veterinaria.modelo.RepoUsuarios;
-import com.example.veterinaria.modelo.RepoProductos;
+import com.example.veterinaria.modelo.repository.RepoUsuarios;
+import com.example.veterinaria.modelo.repository.RepoProductos;
 import com.example.veterinaria.modelo.Usuario;
 import com.example.veterinaria.modelo.Producto;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,9 +31,10 @@ public class ABMProductos {
             @RequestParam(name = "categoria") String categoria,
             @RequestParam(name = "precio") Double precio,
             @RequestParam(name = "admin") String admin){
-
+        
+        if(cantidad >= 0 && precio >= 0){
             rp.saveAndFlush(new Producto(descripcion, cantidad, categoria, precio));
-            
+        }
         Usuario usuario;
         usuario = ru.findById(admin).get();
         redirectAttributes.addFlashAttribute("usuario", usuario);
@@ -51,7 +52,7 @@ public class ABMProductos {
             @RequestParam(name = "accion") String accion) {
         if(accion.equals("Borrar")) {
             rp.deleteById(id);
-        } else if(accion.equals("Editar")){
+        } else if(accion.equals("Editar") && cantidad >= 0 && precio >= 0){
             Producto editado = rp.findById(id).get();
             editado.setId(id);
             editado.setDescripcion(descripcion);

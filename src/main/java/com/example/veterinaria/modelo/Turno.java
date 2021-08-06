@@ -25,15 +25,20 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "turnos")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "numerocontacto")
-public class Turno implements Serializable{    
+//@DiscriminatorColumn(name = "numerocontacto")
+public class Turno implements Serializable{   
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(updatable = false, unique = true, insertable = false)
+    String id;
+    
     @NotNull
     @Column(nullable = false)
     String iddoctor;
     
     @NotNull
     @Column(nullable = false)
-    String horario;
+   private String horario;
     
     @NotNull
     @Column(nullable = false)
@@ -48,14 +53,15 @@ public class Turno implements Serializable{
     String tipoanimal;
     
     @Column(nullable = false)
-    @Id
     String numerocontacto;
     
     @NotNull
     @Column(nullable = false)
     String dia;
 
-    public Turno(String iddoctor, String horario, String nombrepropietario, String nombremascota, String tipoanimal, String numerocontacto, String dia) {
+    public Turno(String id, String iddoctor, String horario, String nombrepropietario,
+            String nombremascota, String tipoanimal, String numerocontacto, String dia) {
+        this.id = id;
         this.iddoctor = iddoctor;
         this.horario = horario;
         this.nombrepropietario = nombrepropietario;
@@ -64,8 +70,30 @@ public class Turno implements Serializable{
         this.numerocontacto = numerocontacto;
         this.dia = dia;
     }
-
+    
     public Turno() {
+    }
+
+    public Turno(String iddoctor, String horario, String nombrepropietario, String nombremascota,
+            String tipoanimal, String numerocontacto, String dia) {
+        this.iddoctor = iddoctor;
+        this.horario = horario;
+        this.nombrepropietario = nombrepropietario;
+        this.nombremascota = nombremascota;
+        this.tipoanimal = tipoanimal;
+        this.numerocontacto = numerocontacto;
+        this.dia = dia;
+    }
+    
+    
+
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getIddoctor() {

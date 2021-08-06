@@ -48,32 +48,33 @@
                 <article id="turnos" class="panel">
                     <header>
                         <h2>Edición de Turnos</h2>
-                        <h2>id/horario/nombre del dueño/nombre de la mascota/tipo de animal/numero de contacto/dia</h2>
+                        <!-- <h2>id/horario/nombre del dueño/nombre de la mascota/tipo de animal/numero de contacto/dia</h2> -->
                     </header>
                     <div th:each="t : ${turnos}">
                         <form action="#turnos" th:action="@{/editar-borrar-turno}" method="post">
                             <input type="hidden" name="admin" th:value="${usuario.id}" />
+                            <input type="hidden" name="idturno" th:value="${t.id}" />
                             <div class="row">
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="iddoctor" th:value="${t.iddoctor}" required />
+                                    <input type="text" name="iddoctor" th:value="${t.iddoctor}" placeholder="Usuario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="horario" th:value="${t.horario}" required />
+                                    <input type="text" name="horario" th:value="${t.horario}" placeholder="Horario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="nombrepropietario" th:value="${t.nombrepropietario}" required />
+                                    <input type="text" name="nombrepropietario" th:value="${t.nombrepropietario}" placeholder="Nombre de propietario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="nombremascota" th:value="${t.nombremascota}" required />
+                                    <input type="text" name="nombremascota" th:value="${t.nombremascota}" placeholder="Nombre de mascota" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="tipoanimal" th:value="${t.tipoanimal}" required />
+                                    <input type="text" name="tipoanimal" th:value="${t.tipoanimal}" placeholder="Tipo de animal" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="numerocontacto" th:value="${t.numerocontacto}" required />
+                                    <input type="text" name="numerocontacto" th:value="${t.numerocontacto}" placeholder="Numero de contacto" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="dia" th:value="${t.dia}" required />
+                                    <input type="text" name="dia" th:value="${t.dia}" placeholder="Día del turno" required />
                                 </div>
                                 <div class="col-2 col-12-medium">
                                     <input type="submit" name="accion" value="Editar" />
@@ -97,7 +98,7 @@
                                         <option th:each="d : ${doctores}" th:value="${d.id}" th:utext="${d.nombre}"></option>
                                     </select>
                                 </div>
-                                    
+
                                 <div class="col-4 col-12-medium">                                        
                                     <select name="horario">
                                         <option disabled selected>Elija un horario</option>
@@ -119,7 +120,7 @@
                                         <option value="18:00">18:00</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="row">
                                     <div class="col-3 col-12-medium">
                                         <input type="text" name="nombrepropietario" placeholder="Nombre del dueño" required />
@@ -128,18 +129,18 @@
                                         <input type="text" name="nombremascota" placeholder="Nombre de la mascota" required />
                                     </div>
                                     <div class="row">
-                                    <div class="col-3 col-12-medium">                                       
-                                        <select name="tipoanimal">
-                                            <option disabled selected>Tipo de animal</option>
-                                            <option value="gato">Gato</option>
-                                            <option value="perro">Perro</option>
-                                            <option value="tortuga">Tortuga</option>
-                                            <option value="canario">Canario</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-3 col-12-medium">
-                                        <input type="text" name="numerocontacto" placeholder="Numero de contacto" required />
-                                    </div>
+                                        <div class="col-3 col-12-medium">                                       
+                                            <select name="tipoanimal">
+                                                <option disabled selected>Tipo de animal</option>
+                                                <option value="gato">Gato</option>
+                                                <option value="perro">Perro</option>
+                                                <option value="tortuga">Tortuga</option>
+                                                <option value="canario">Canario</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-3 col-12-medium">
+                                            <input type="text" name="numerocontacto" placeholder="Numero de contacto" required />
+                                        </div>
                                         <div class="col-4 col-12-medium">                                        
                                             <select name="dia">
                                                 <option disabled selected>Elija el dia</option>
@@ -151,17 +152,17 @@
                                             </select>
                                         </div>
 
-                                    <div class="col-3 col-12-medium">
-                                        <input type="submit" value="Nuevo" />
-                                    </div>
+                                        <div class="col-3 col-12-medium">
+                                            <input type="submit" value="Nuevo" />
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </article>
-                
-                                                <!-- Productos -->
+
+                <!-- Productos -->
                 <article id="productos" class="panel">
                     <header>
                         <h2>Venta de Productos</h2>
@@ -175,20 +176,20 @@
                                 <input type="hidden" name="id" th:value="${p.id}" readonly required />
 
 
-                               Producto <input type="text" name="descripcion" th:value="${p.descripcion}"readonly required />
+                                Producto <input type="text" name="descripcion" th:value="${p.descripcion}"readonly required />
 
-                               Cantidad <input type="text" name="cantidad" th:value="${p.cantidad}"readonly required />
+                                Cantidad <input type="text" name="cantidad" th:value="${p.cantidad}"readonly required />
 
-                               Categoría <input type="text" name="categoria" th:value="${p.categoria}"readonly required />
+                                Categoría <input type="text" name="categoria" th:value="${p.categoria}"readonly required />
 
-                               Precio <input type="text" name="precio" th:value="${p.precio}"readonly required />
-                               
-                                 <input type="text" name="cantidadventa" placeholder="Cantidad a vender" />
+                                Precio <input type="text" name="precio" th:value="${p.precio}"readonly required />
+
+                                  <input type="text" name="cantidadventa" placeholder="Cantidad a vender" />
 
                                 <div class="col-2 col-12-medium">
                                     <input type="submit" name="accion" value="Vender" />
                                 </div>
-                                
+
                             </div>
                         </form>
                     </div>

@@ -28,17 +28,15 @@ public class Usuario implements Serializable {
     @NotNull
     @Column(nullable = false)
     String diaslaborales;
-
-    @NotNull
-    @Column(nullable = false)
+    
+    @Column
     String manejoanimal;
 
-    public Usuario(String id, String nombre, String password, String diaslaborales/*, String manejoanimal*/) {
+    public Usuario(String id, String nombre, String password, String diaslaborales) {
         this.id = id;
         this.nombre = nombre;
         this.password = password;
         this.diaslaborales = diaslaborales;
-        //this.manejoanimal = manejoanimal;
     }
 
     public Usuario() {

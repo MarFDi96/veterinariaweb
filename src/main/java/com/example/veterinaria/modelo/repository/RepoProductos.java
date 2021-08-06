@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.example.veterinaria.modelo;
+package com.example.veterinaria.modelo.repository;
 
+import com.example.veterinaria.modelo.Producto;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
@@ -13,11 +14,10 @@ import org.springframework.stereotype.Repository;
  *
  * @author Skynet
  */
-
 @Repository
-public interface RepoUsuarios extends JpaRepository<Usuario, String>{
+public interface RepoProductos extends JpaRepository<Producto, String>{
     
-    public List<Usuario> findByIdAndPassword(String id, String password);
+    public List<Producto> findByDescripcion(String descripcion);
     
-    public List<Usuario> findByRol(String rol);
+    public List<Producto> findByCategoria(String categoria);
 }

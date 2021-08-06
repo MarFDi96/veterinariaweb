@@ -48,7 +48,7 @@
                 <article id="users" class="panel">
                     <header>
                         <h2>Edicion de Usuarios</h2>
-                        <h3>(id/nombre/password/rol)</h3>
+                        <!--<h3>(id/nombre/password/rol)</h3>-->
 
                     </header>
                     <div th:each="u : ${usuarios}">
@@ -59,13 +59,13 @@
                                     <input type="text" name="id" th:value="${u.id}" readonly required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="nombre" th:value="${u.nombre}" required />
+                                    <input type="text" name="nombre" th:value="${u.nombre}" placeholder="Nombre" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="password" name="password" th:value="${u.password}" required />
+                                    <input type="password" name="password" th:value="${u.password}" placeholder="Contraseña" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="rol" th:value="${u.rol}" readonly required />
+                                    <input type="text" name="rol" th:value="${u.rol}" placeholder="Ocupación" readonly required />
                                 </div>                  
 
                                 <div class="col-2 col-12-medium">
@@ -111,32 +111,33 @@
                 <article id="turnos" class="panel">
                     <header>
                         <h2>Edición de Turnos</h2>
-                        <h2>id/horario/nombre del dueño/nombre de la mascota/tipo de animal/numero de contacto/dia</h2>
+                       <!-- <h2>id/horario/nombre del dueño/nombre de la mascota/tipo de animal/numero de contacto/dia</h2> -->
                     </header>
                     <div th:each="t : ${turnos}">
                         <form action="#turnos" th:action="@{/editar-borrar-turno}" method="post">
                             <input type="hidden" name="admin" th:value="${usuario.id}" />
+                            <input type="hidden" name="idturno" th:value="${t.id}" />
                             <div class="row">
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="iddoctor" th:value="${t.iddoctor}" required />
+                                    <input type="text" name="iddoctor" th:value="${t.iddoctor}" placeholder="Usuario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="horario" th:value="${t.horario}" required />
+                                    <input type="text" name="horario" th:value="${t.horario}" placeholder="Horario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="nombrepropietario" th:value="${t.nombrepropietario}" required />
+                                    <input type="text" name="nombrepropietario" th:value="${t.nombrepropietario}" placeholder="Nombre de propietario" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="nombremascota" th:value="${t.nombremascota}" required />
+                                    <input type="text" name="nombremascota" th:value="${t.nombremascota}" placeholder="Nombre de mascota" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="tipoanimal" th:value="${t.tipoanimal}" required />
+                                    <input type="text" name="tipoanimal" th:value="${t.tipoanimal}" placeholder="Tipo de animal" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="numerocontacto" th:value="${t.numerocontacto}" required />
+                                    <input type="text" name="numerocontacto" th:value="${t.numerocontacto}" placeholder="Numero de contacto" required />
                                 </div>
                                 <div class="col-3 col-12-medium">
-                                    <input type="text" name="dia" th:value="${t.dia}" required />
+                                    <input type="text" name="dia" th:value="${t.dia}" placeholder="Día del turno" required />
                                 </div>
                                 <div class="col-2 col-12-medium">
                                     <input type="submit" name="accion" value="Editar" />
@@ -153,6 +154,7 @@
                         <form action="#turnos" th:action="@{/nuevo-turno}" method="post">
                             <input type="hidden" name="admin" th:value="${usuario.id}" />
                             <div class="row">
+
 
                                 <div class="col-3 col-12-medium">                                       
                                     <select name="iddoctor">

@@ -111,7 +111,6 @@
                 <article id="turnos" class="panel">
                     <header>
                         <h2>Edición de Turnos</h2>
-                       <!-- <h2>id/horario/nombre del dueño/nombre de la mascota/tipo de animal/numero de contacto/dia</h2> -->
                     </header>
                     <div th:each="t : ${turnos}">
                         <form action="#turnos" th:action="@{/editar-borrar-turno}" method="post">
@@ -241,16 +240,16 @@
                                 <input type="hidden" name="id" th:value="${p.id}" readonly required />
 
 
-                                <input type="text" name="descripcion" th:value="${p.descripcion}" required />
+                                <input type="text" name="descripcion" th:value="${p.descripcion}" placeholder="Descripción" required />
 
 
-                                <input type="text" name="cantidad" th:value="${p.cantidad}" required />
+                                <input type="text" name="cantidad" th:value="${p.cantidad}" placeholder="Cantidad" required />
                                 
                                 
                                 <input type="text" name="categoria" th:value="${p.categoria}" readonly required />
                                 
                                 
-                                <input type="text" name="precio" th:value="${p.precio}" required />
+                                <input type="text" name="precio" th:value="${p.precio}" placeholder="Precio" required />
 
 
                                 <div class="col-2 col-12-medium">
